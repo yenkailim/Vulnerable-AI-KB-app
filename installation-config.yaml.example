@@ -18,6 +18,10 @@ application:
   image_tag: "auto"
   db_password: "REQUIRED_CHANGE_ME"
   openai_api_key: "REQUIRED_OPENAI_KEY_OR_EMPTY"
+  # Leave both empty to use OpenAI's hosted API with the key above.
+  # Set to point the assistant at a self-hosted OpenAI-compatible endpoint instead.
+  openai_base_url: ""
+  openai_model: ""
   cisco_ai_defense_api_key: ""
   m365_tenant_id: ""
   m365_client_id: ""

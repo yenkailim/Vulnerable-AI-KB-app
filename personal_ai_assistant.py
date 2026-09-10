@@ -20,7 +20,8 @@ except ImportError:  # pragma: no cover - handled at runtime with a clear messag
     psycopg = None
     dict_row = None
 
-DEFAULT_MODEL = "gpt-4o-mini"
+DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1"
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip() or "gpt-4o-mini"
 CISCO_INSPECT_URL = "https://us.api.inspect.aidefense.security.cisco.com/api/v1/inspect/chat"
 GRAPH_TOKEN_URL_TMPL = "https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
 GRAPH_SENDMAIL_URL_TMPL = "https://graph.microsoft.com/v1.0/users/{sender}/sendMail"
@@ -188,6 +189,10 @@ def build_prompt(question: str, context_rows: list[dict[str, Any]]) -> list[dict
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 
+def get_openai_base_url() -> str:
+    return (os.getenv("OPENAI_BASE_URL", "").strip() or DEFAULT_OPENAI_BASE_URL).rstrip("/")
+
+
 def call_openai(api_key: str, model: str, messages: list[dict[str, str]]) -> str:
     payload = {
         "model": model,
@@ -195,7 +200,7 @@ def call_openai(api_key: str, model: str, messages: list[dict[str, str]]) -> str
         "temperature": 1,
     }
     req = urllib.request.Request(
-        "https://api.openai.com/v1/chat/completions",
+        f"{get_openai_base_url()}/chat/completions",
         data=json.dumps(payload).encode("utf-8"),
         headers={
             "Content-Type": "application/json",
@@ -225,7 +230,7 @@ def call_openai_json(api_key: str, model: str, messages: list[dict[str, str]]) -
         "response_format": {"type": "json_object"},
     }
     req = urllib.request.Request(
-        "https://api.openai.com/v1/chat/completions",
+        f"{get_openai_base_url()}/chat/completions",
         data=json.dumps(payload).encode("utf-8"),
         headers={
             "Content-Type": "application/json",
@@ -868,7 +873,11 @@ def parse_args() -> argparse.Namespace:
         help="Legacy SQLite option retained for compatibility; PostgreSQL env vars are used instead.",
     )
     parser.add_argument("--top-k", type=int, default=10, help="How many rows to include in RAG context")
-    parser.add_argument("--model", default=DEFAULT_MODEL, help="OpenAI model (default: gpt-4o-mini)")
+    parser.add_argument(
+        "--model",
+        default=DEFAULT_MODEL,
+        help=f"Chat model name (default: {DEFAULT_MODEL}, override with OPENAI_MODEL env var)",
+    )
     parser.add_argument(
         "--no-sql-exec",
         action="store_true",

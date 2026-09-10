@@ -42,6 +42,9 @@ Read and validate the entire config before changing the host or cluster:
 - `db_password` is non-placeholder and is the same value used for the database
   and application Secret.
 - `openai_api_key` is either a valid configured key or explicitly empty.
+- `openai_base_url` and `openai_model`, if set, point at a reachable
+  OpenAI-compatible endpoint and its model name; if empty, the assistant
+  defaults to OpenAI's hosted API and `gpt-4o-mini`.
 - `hec_token` is non-placeholder when Splunk is enabled. Do not echo it.
 - HEC host, port, index, SSL mode, Hubble chart repository, and version are
   present.
@@ -98,6 +101,10 @@ shell command arguments, shell history, or reports.
 Create application Secrets with the configured database and optional API keys,
 then verify only key names and object existence. Treat repository credentials
 as compromised until replaced by the config values.
+
+`openai_base_url` and `openai_model` are not secrets; set them as
+`OPENAI_BASE_URL`/`OPENAI_MODEL` in the application ConfigMap (leave empty to
+keep the OpenAI defaults) rather than in the Secret.
 
 Do not apply the tracked Secret objects from `k8s/10-postgres.yaml` or
 `k8s/20-app.yaml` directly. Create temporary sanitized manifest copies with

@@ -12,6 +12,8 @@ data:
   DB_USER: vulnerableapp
   DB_SSLMODE: disable
   DB_INIT_ON_START: "true"
+  OPENAI_BASE_URL: ""
+  OPENAI_MODEL: ""
 ---
 apiVersion: v1
 kind: Secret
