@@ -363,6 +363,10 @@ Required changes:
 Assistant integrations:
 
 - Set `OPENAI_API_KEY` to a valid key to enable normal assistant questions.
+- Optionally set `OPENAI_BASE_URL` to a self-hosted OpenAI-compatible
+  endpoint's base URL (e.g. `http://llm.internal:8000/v1`) and `OPENAI_MODEL`
+  to that endpoint's model name. Leave both empty to use OpenAI's hosted API
+  with `gpt-4o-mini`.
 - Leave `CISCO_AI_DEFENSE_API_KEY` empty unless a valid Cisco AI Defense key is
   available. Cisco inspection is optional.
 - Leave the Microsoft 365 values empty unless email integration is required and

@@ -57,8 +57,9 @@ cp installation-config.yaml.example installation-config.yaml
 chmod 600 installation-config.yaml
 ```
 
-Populate the sudo account, database password, OpenAI key, Hubble Enterprise
-settings, and Splunk HEC settings. Never commit or share
+Populate the sudo account, database password, OpenAI (or self-hosted
+OpenAI-compatible) key/endpoint/model, Hubble Enterprise settings, and Splunk
+HEC settings. Never commit or share
 `installation-config.yaml`; credentials belong only in that local ignored file.
 The automated skill still validates existing resources and stops on unsafe
 cluster conflicts.
