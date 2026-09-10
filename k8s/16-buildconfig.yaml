@@ -5,11 +5,11 @@
 # `oc start-build --from-dir=.` instead.
 #
 # No webhook is configured -- trigger a build manually after each push:
-#   oc start-build vulnerableapp -n vulnerableapp --follow
+#   oc start-build vulnerableapp-selfhosted -n vulnerableapp --follow
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: vulnerableapp
+  name: vulnerableapp-selfhosted
   namespace: vulnerableapp
   labels:
     app.kubernetes.io/name: vulnerableapp
