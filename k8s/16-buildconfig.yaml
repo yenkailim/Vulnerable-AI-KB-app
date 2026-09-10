@@ -1,0 +1,40 @@
+# Builds straight from the GitHub repo (requires outbound egress to
+# github.com from the cluster) instead of a local `oc start-build
+# --from-dir=.`. If the cluster is isolated with no egress, switch this
+# BuildConfig's `spec.source` to a Binary strategy and trigger builds with
+# `oc start-build --from-dir=.` instead.
+#
+# No webhook is configured -- trigger a build manually after each push:
+#   oc start-build vulnerableapp -n vulnerableapp --follow
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: vulnerableapp
+  namespace: vulnerableapp
+  labels:
+    app.kubernetes.io/name: vulnerableapp
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/yenkailim/Vulnerable-AI-KB-app.git
+      ref: main
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: vulnerableapp-selfhost:latest
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  successfulBuildsHistoryLimit: 3
+  failedBuildsHistoryLimit: 3
+  triggers:
+    - type: ConfigChange

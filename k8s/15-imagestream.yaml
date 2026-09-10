@@ -1,0 +1,12 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: vulnerableapp-selfhost
+  namespace: vulnerableapp
+  labels:
+    app.kubernetes.io/name: vulnerableapp
+spec:
+  lookupPolicy:
+    # Lets the Deployment reference the short tag "vulnerableapp-selfhost:latest"
+    # instead of the full internal registry path.
+    local: true

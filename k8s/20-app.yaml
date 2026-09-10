@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: vulnerableapp:latest
+          image: vulnerableapp-selfhost:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
